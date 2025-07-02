@@ -19,9 +19,13 @@ const app = express();
 
 // ✅ CORS config (place before anything else)
 const corsOptions = {
-  origin: ['http://localhost:3000'],
-  credentials: true
+  origin: [
+    'http://localhost:3000',
+    'https://benita1805.github.io', 
+  ],
+  credentials: true,
 };
+
 app.use(cors(corsOptions));
 
 // ✅ Security middleware
@@ -40,6 +44,7 @@ const authLimiter = rateLimit({
   max: 5,
   message: { message: 'Too many authentication attempts, please try again later.' }
 });
+
 app.use('/api/auth', authLimiter);
 
 // ✅ Body parsing
