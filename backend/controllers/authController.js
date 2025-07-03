@@ -51,7 +51,7 @@ const register = async (req, res) => {
     console.log("✅ Creating new user with:", { name, email });
 
     // Create new user
-    const user = new User({ name, email, password });
+    const user = new User({ name, email, password, isActive:true });
     await user.save();
 
     console.log("🎉 User created successfully");

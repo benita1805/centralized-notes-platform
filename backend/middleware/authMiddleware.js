@@ -20,9 +20,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: 'User not found' });
     }
 
-    if (!user.isActive) {
-      return res.status(401).json({ message: 'User account is deactivated' });
-    }
+    
 
     req.user = user; // Add user to request
     next();

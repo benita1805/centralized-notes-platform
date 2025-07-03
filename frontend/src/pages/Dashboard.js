@@ -4,6 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import NoteCard from '../components/NoteCard';
 import UploadForm from '../components/UploadForm';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
+
 const Dashboard = () => {
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
@@ -33,7 +36,7 @@ const Dashboard = () => {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/notes', {
+      const response = await fetch(`${API_BASE_URL}/api/notes`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -42,6 +45,8 @@ const Dashboard = () => {
       if (response.ok) {
         const notesData = await response.json();
         setNotes(notesData);
+      } else {
+        console.error('Failed to fetch notes:', await response.text());
       }
     } catch (error) {
       console.error('Failed to fetch notes:', error);
@@ -78,13 +83,12 @@ const Dashboard = () => {
       tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag)
     };
 
+    const url = editingNote
+      ? `${API_BASE_URL}/api/notes/${editingNote._id}`
+      : `${API_BASE_URL}/api/notes`;
+    const method = editingNote ? 'PUT' : 'POST';
+
     try {
-      const url = editingNote 
-        ? `http://localhost:5000/api/notes/${editingNote.id}`
-        : 'http://localhost:5000/api/notes';
-
-      const method = editingNote ? 'PUT' : 'POST';
-
       const response = await fetch(url, {
         method,
         headers: {
@@ -97,6 +101,8 @@ const Dashboard = () => {
       if (response.ok) {
         setIsModalOpen(false);
         fetchNotes();
+      } else {
+        console.error('Note save failed:', await response.text());
       }
     } catch (error) {
       console.error('Failed to save note:', error);
@@ -107,7 +113,7 @@ const Dashboard = () => {
     if (!window.confirm('Are you sure you want to delete this note?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/notes/${noteId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/notes/${noteId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -122,8 +128,8 @@ const Dashboard = () => {
     }
   };
 
-  const handleUpload = (uploadResult) => {
-    console.log('File uploaded:', uploadResult);
+  const handleUpload = () => {
+    fetchNotes();
   };
 
   if (loading) {
@@ -185,16 +191,17 @@ const Dashboard = () => {
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredNotes.map((note) => (
               <NoteCard
-                key={note.id}
+                key={note._id}
                 note={note}
                 onEdit={handleEditNote}
-                onDelete={handleDeleteNote}
+                onDelete={() => handleDeleteNote(note._id)}
               />
             ))}
           </div>
         )}
       </div>
 
+      {/* Note Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-black border-4 border-cyanGlow rounded-lg max-w-2xl w-full p-6">
@@ -210,7 +217,6 @@ const Dashboard = () => {
                 placeholder="Enter note title"
                 required
               />
-
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -219,7 +225,6 @@ const Dashboard = () => {
                 placeholder="Write your note content here..."
                 required
               />
-
               <input
                 type="text"
                 value={tags}
@@ -227,20 +232,18 @@ const Dashboard = () => {
                 className="w-full px-4 py-3 bg-black border border-magentaGlow text-cyanGlow rounded-lg placeholder-magentaGlow focus:outline-none"
                 placeholder="e.g., work, personal, ideas"
               />
-
               <div className="flex items-center">
                 <input
                   type="checkbox"
                   id="isPublic"
                   checked={isPublic}
                   onChange={(e) => setIsPublic(e.target.checked)}
-                  className="h-4 w-4 text-magentaGlow focus:ring-magentaGlow border-cyanGlow bg-black rounded"
+                  className="h-4 w-4 text-magentaGlow border-cyanGlow bg-black rounded"
                 />
                 <label htmlFor="isPublic" className="ml-2 text-sm text-cyanGlow">
                   Make this note public
                 </label>
               </div>
-
               <div className="flex justify-end gap-4 pt-6">
                 <button
                   type="button"

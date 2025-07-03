@@ -61,6 +61,11 @@ const multerErrorHandler = (err, req, res, next) => {
 
 // ✅ File Upload Route
 router.post('/', authMiddleware, upload.single('file'), multerErrorHandler, async (req, res) => {
+  console.log('📥 Upload route hit'); // ADD THIS
+  console.log('👤 User:', req.user?.email); // ADD THIS
+  console.log('📄 File:', req.file); // ADD THIS
+  console.log('📝 Body:', req.body); // ADD THIS
+
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });

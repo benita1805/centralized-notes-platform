@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
+  isActive: {
+  type: Boolean,
+  default: true
+},
+
   createdAt: {
     type: Date,
     default: Date.now

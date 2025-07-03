@@ -2,16 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import UploadForm from '../components/UploadForm';
 import {
-  FileText,
-  Download,
-  Trash2,
-  Eye,
-  Calendar,
-  User,
-  BookOpen,
-  Hash,
-  Layers
+  FileText, Download, Trash2, Calendar, User, BookOpen, Hash, Layers
 } from 'lucide-react';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 
 const Upload = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -24,7 +19,7 @@ const Upload = () => {
 
   const fetchUploadedFiles = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/files', {
+      const response = await fetch(`${API_BASE_URL}/api/files`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -47,7 +42,7 @@ const Upload = () => {
 
   const handleDownload = async (fileId, filename) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/files/${fileId}/download`, {
+      const response = await fetch(`${API_BASE_URL}/api/files/${fileId}/download`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -73,7 +68,7 @@ const Upload = () => {
     if (!window.confirm('Are you sure you want to delete this file?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/files/${fileId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -99,11 +94,8 @@ const Upload = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
   };
 
@@ -154,7 +146,7 @@ const Upload = () => {
           ) : (
             <div className="divide-y divide-gray-200">
               {uploadedFiles.map((file) => (
-                <div key={file.id} className="p-6 hover:bg-gray-50 transition-colors">
+                <div key={file._id || file.id} className="p-6 hover:bg-gray-50 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className="text-2xl">
@@ -166,25 +158,25 @@ const Upload = () => {
                         </h4>
                         <div className="flex items-center flex-wrap gap-3 mt-1 text-xs text-gray-500">
                           <span>{formatFileSize(file.size)}</span>
-                          <span className="flex items-center gap-1"><Calendar size={12} /> {formatDate(file.createdAt || file.created_at || file.uploadDate)}</span>
+                          <span className="flex items-center gap-1"><Calendar size={12} /> {formatDate(file.createdAt)}</span>
                           {file.subjectName && <span className="flex items-center gap-1"><BookOpen size={12} /> {file.subjectName}</span>}
                           {file.subjectCode && <span className="flex items-center gap-1"><Hash size={12} /> {file.subjectCode}</span>}
                           {file.semester && <span className="flex items-center gap-1"><Layers size={12} /> {file.semester}</span>}
-                          {file.uploadedBy && <span className="flex items-center gap-1"><User size={12} /> {file.uploadedBy}</span>}
+                          {file.uploadedBy && <span className="flex items-center gap-1"><User size={12} /> {file.uploadedBy.email || file.uploadedBy}</span>}
                         </div>
                       </div>
                     </div>
 
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => handleDownload(file.id, file.originalName || file.original_name || file.filename)}
+                        onClick={() => handleDownload(file._id || file.id, file.originalName || file.filename)}
                         className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white px-4 py-2 rounded-lg shadow hover:scale-105 transition"
                         title="Download file"
                       >
                         <Download size={16} />
                       </button>
                       <button
-                        onClick={() => handleDelete(file.id)}
+                        onClick={() => handleDelete(file._id || file.id)}
                         className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         title="Delete file"
                       >
