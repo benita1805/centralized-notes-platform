@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/centralized-notes-platform/static/css/main.54e84a61.css",
-    "main.js": "/centralized-notes-platform/static/js/main.1b657098.js",
+    "main.js": "/centralized-notes-platform/static/js/main.a8933784.js",
     "index.html": "/centralized-notes-platform/index.html",
     "main.54e84a61.css.map": "/centralized-notes-platform/static/css/main.54e84a61.css.map",
-    "main.1b657098.js.map": "/centralized-notes-platform/static/js/main.1b657098.js.map"
+    "main.a8933784.js.map": "/centralized-notes-platform/static/js/main.a8933784.js.map"
   },
   "entrypoints": [
     "static/css/main.54e84a61.css",
-    "static/js/main.1b657098.js"
+    "static/js/main.a8933784.js"
   ]
 }
