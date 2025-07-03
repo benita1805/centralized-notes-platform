@@ -114,7 +114,8 @@ const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        lastLogin: user.lastLogin
+        lastLogin: user.lastLogin,
+        isActive: user.isActive
       }
     });
   } catch (error) {

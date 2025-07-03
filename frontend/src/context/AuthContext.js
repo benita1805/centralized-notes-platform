@@ -61,11 +61,7 @@ export const AuthProvider = ({ children }) => {
 
       const { token, user: loggedInUser } = response.data;
 
-      if (!loggedInUser.isActive) {
-        toast.error('Account is deactivated.');
-        return { success: false, message: 'Account is deactivated' };
-      }
-
+    
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(loggedInUser));
 
