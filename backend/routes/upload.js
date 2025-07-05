@@ -6,13 +6,10 @@ const fs = require('fs');
 const File = require('../models/File');
 const { authMiddleware } = require('../middleware/authMiddleware');
 
-// ✅ Ensure uploads directory exists
 const uploadPath = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
-
-// ✅ Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadPath);
@@ -22,8 +19,6 @@ const storage = multer.diskStorage({
     cb(null, `${uniqueSuffix}-${file.originalname}`);
   }
 });
-
-// ✅ Allow only specific file types
 const allowedMimeTypes = [
   'application/pdf',
   'application/msword',
@@ -41,15 +36,11 @@ const fileFilter = (req, file, cb) => {
     cb(new Error('Unsupported file type'), false);
   }
 };
-
-// ✅ Multer middleware with limits
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 10 * 1024 * 1024 } 
 });
-
-// ✅ Multer error handling middleware
 const multerErrorHandler = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     return res.status(400).json({ error: `Upload error: ${err.message}` });
@@ -58,13 +49,11 @@ const multerErrorHandler = (err, req, res, next) => {
   }
   next();
 };
-
-// ✅ File Upload Route
 router.post('/', authMiddleware, upload.single('file'), multerErrorHandler, async (req, res) => {
-  console.log('📥 Upload route hit'); // ADD THIS
-  console.log('👤 User:', req.user?.email); // ADD THIS
-  console.log('📄 File:', req.file); // ADD THIS
-  console.log('📝 Body:', req.body); // ADD THIS
+  console.log('📥 Upload route hit'); 
+  console.log('👤 User:', req.user?.email); 
+  console.log('📄 File:', req.file); 
+  console.log('📝 Body:', req.body);
 
   try {
     if (!req.file) {

@@ -10,8 +10,6 @@ import Profile from './pages/Profile';
 import Footer from './components/Footer';
 import MainLayout from './layouts/MainLayout';
 import './index.css';
-
-// 🔒 Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   if (loading) {
@@ -23,8 +21,6 @@ const ProtectedRoute = ({ children }) => {
   }
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
-
-// 🌐 Public Route Component
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   if (loading) {
@@ -42,23 +38,14 @@ function AppRoutes() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Redirect root to dashboard */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
-          {/* Public pages - let Login/Register handle their own layout */}
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
-
-          {/* Protected routes wrapped with MainLayout */}
           <Route path="/dashboard" element={<ProtectedRoute><MainLayout><Dashboard /></MainLayout></ProtectedRoute>} />
           <Route path="/upload" element={<ProtectedRoute><MainLayout><Upload /></MainLayout></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><MainLayout><Profile /></MainLayout></ProtectedRoute>} />
-
-          {/* Catch-all */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
-
-        {/* Toast Notifications */}
         <Toaster
           position="top-right"
           toastOptions={{

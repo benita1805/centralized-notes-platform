@@ -34,13 +34,10 @@ const Navbar = () => {
     <nav className="bg-black border-b-2 border-cyanGlow text-white font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
           <Link to="/dashboard" className="flex items-center space-x-2">
             <FileText className="h-7 w-7 text-magentaGlow" />
             <span className="text-xl font-bold text-cyanGlow">NotesHub</span>
           </Link>
-
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -73,8 +70,6 @@ const Navbar = () => {
               <span>Logout</span>
             </button>
           </div>
-
-          {/* Mobile Menu Toggle */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -85,8 +80,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-cyanGlow bg-black px-4 py-4 space-y-4">
           {navItems.map((item) => {

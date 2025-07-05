@@ -28,7 +28,6 @@ const UploadForm = ({ onUpload }) => {
     'image/gif'
   ];
   const maxFileSize = 10 * 1024 * 1024; // 10MB
-
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -93,7 +92,7 @@ const UploadForm = ({ onUpload }) => {
 
     try {
       setUploadStatus(prev => ({ ...prev, [index]: 'uploading' }));
-      const token = localStorage.getItem("token");
+      
 
       const response = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',

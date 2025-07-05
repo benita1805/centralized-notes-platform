@@ -15,8 +15,6 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-sunset-retro px-4 py-12 font-sans text-white">
       <div className="max-w-2xl mx-auto bg-black border-2 border-cyanGlow rounded-2xl p-6 sm:p-8 shadow-xl">
-        
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
           <div className="flex items-center space-x-4">
             <User size={48} className="text-magentaGlow" />
@@ -28,8 +26,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-
-        {/* Info Section */}
         <div className="space-y-5 text-cyanGlow text-sm mb-6">
           <div className="flex items-center space-x-3">
             <Mail size={20} />
@@ -40,8 +36,6 @@ const Profile = () => {
             <span>Account Settings <span className="text-xs text-magentaGlow">(coming soon)</span></span>
           </div>
         </div>
-
-        {/* Action Buttons */}
         <div className="flex flex-wrap gap-4 mb-6">
           <button
             onClick={() => navigate('/dashboard')}
@@ -58,8 +52,6 @@ const Profile = () => {
             <span>Upload Note</span>
           </button>
         </div>
-
-        {/* Logout */}
         <div className="flex justify-end">
           <button
             onClick={handleLogout}

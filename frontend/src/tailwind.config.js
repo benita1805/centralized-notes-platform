@@ -4,7 +4,7 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}',
     './public/index.html',
   ],
-  darkMode: 'class', // Optional: use 'media' or 'class'
+  darkMode: 'class', 
   theme: {
     extend: {
       backgroundImage: {
@@ -12,7 +12,7 @@ module.exports = {
       },
       fontFamily: {
       sans: ['Sora', 'sans-serif'],
-      arcade: ['"Press Start 2P"', 'cursive'], // optional if using for headings only
+      arcade: ['"Press Start 2P"', 'cursive'], 
       },
     },
       colors: {

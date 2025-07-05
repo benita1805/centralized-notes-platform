@@ -15,8 +15,6 @@ const connectDB = async () => {
     });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
-
-    // Handle runtime connection errors
     mongoose.connection.on('error', (err) => {
       console.error('❌ MongoDB connection error:', err);
     });
@@ -24,8 +22,6 @@ const connectDB = async () => {
     mongoose.connection.on('disconnected', () => {
       console.warn('⚠️ MongoDB disconnected');
     });
-
-    // Graceful shutdown
     process.on('SIGINT', async () => {
       try {
         await mongoose.connection.close();

@@ -1,11 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
-
-
-/* ========== Base Reset ========== */
 * {
   margin: 0;
   padding: 0;
@@ -29,8 +25,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-
-/* ========== Scrollbar Styles ========== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -50,8 +44,6 @@ code {
 ::-webkit-scrollbar-corner {
   background: #24243e;
 }
-
-/* ========== Focus Ring ========== */
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
@@ -59,8 +51,6 @@ select:focus-visible {
   outline: 2px solid #00f0ff;
   outline-offset: 2px;
 }
-
-/* ========== Utility Classes ========== */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -86,8 +76,6 @@ select:focus-visible {
 .border-gradient {
   border-image: linear-gradient(45deg, #00f0ff, #ff00c8) 1;
 }
-
-/* ========== Tailwind Custom Components ========== */
 @layer components {
   .btn-primary {
     @apply bg-magentaGlow text-black px-4 py-2 rounded-lg hover:bg-cyanGlow hover:text-white transition-colors duration-200 focus:ring-2 focus:ring-cyanGlow focus:ring-offset-2;
@@ -167,8 +155,6 @@ select:focus-visible {
     @apply w-4 h-4 mr-1;
   }
 }
-
-/* ========== Animations ========== */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

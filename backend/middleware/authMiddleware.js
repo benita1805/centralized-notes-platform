@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// ✅ Strict Authentication Middleware
 const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.header('Authorization');
@@ -10,7 +9,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: 'No token provided, authorization denied' });
     }
 
-    const token = authHeader.substring(7); // Remove "Bearer "
+    const token = authHeader.substring(7); 
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -22,7 +21,7 @@ const authMiddleware = async (req, res, next) => {
 
     
 
-    req.user = user; // Add user to request
+    req.user = user;
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
@@ -38,7 +37,7 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-// ✅ Optional Middleware (no auth failure if token missing)
+
 const optionalAuth = async (req, res, next) => {
   try {
     const authHeader = req.header('Authorization');
@@ -54,9 +53,9 @@ const optionalAuth = async (req, res, next) => {
       }
     }
 
-    next(); // Always continue
+    next(); 
   } catch (error) {
-    next(); // Ignore token errors if optional
+    next();
   }
 };
 

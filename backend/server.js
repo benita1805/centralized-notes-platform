@@ -4,20 +4,14 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 require('dotenv').config();
-
-// Route imports
 const connectDB = require('./db');
 const uploadRoute = require('./routes/upload');
 const fileRoutes = require('./routes/fileRoutes');
 const authRoutes = require('./routes/authRoutes');
 const noteRoutes = require('./routes/noteRoutes');
-
-// Connect to MongoDB
 connectDB();
 
 const app = express();
-
-// ✅ CORS config (place before anything else)
 const corsOptions = {
   origin: [
     'http://localhost:3000',
@@ -27,11 +21,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// ✅ Security middleware
 app.use(helmet());
-
-// ✅ Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -46,21 +36,13 @@ const authLimiter = rateLimit({
 });
 
 app.use('/api/auth', authLimiter);
-
-// ✅ Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// ✅ Static uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// ✅ Main API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoute);
 app.use('/api/files', fileRoutes);
 app.use('/api/notes', noteRoutes);
-
-// ✅ Health check route
 app.get('/api/health', (req, res) => {
   res.json({
     message: 'Server is running',
@@ -68,13 +50,10 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime()
   });
 });
-
-// ✅ Catch-all for unknown routes
 app.all('*', (req, res) => {
   res.status(404).json({ message: `Route ${req.originalUrl} not found` });
 });
 
-// ✅ Global error handler
 app.use((err, req, res, next) => {
   console.error('Error:', err.stack);
 
@@ -101,14 +80,10 @@ app.use((err, req, res, next) => {
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
-
-// ✅ Start server
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-// ✅ Graceful shutdown
 ['SIGTERM', 'SIGINT'].forEach(signal => {
   process.on(signal, () => {
     console.log(`${signal} received. Shutting down gracefully...`);

@@ -1,4 +1,4 @@
-// models/File.js
+
 const mongoose = require('mongoose');
 
 const fileSchema = new mongoose.Schema({
@@ -11,7 +11,7 @@ const fileSchema = new mongoose.Schema({
   subjectCode: { type: String, required: true },
   semester: { type: String, required: true },
   description: { type: String },
-  uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // ✅ CORRECT
+  uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
   createdAt: { type: Date, default: Date.now }
 });
 

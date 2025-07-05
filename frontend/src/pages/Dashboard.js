@@ -21,9 +21,9 @@ const Dashboard = () => {
   const [isPublic, setIsPublic] = useState(false);
   const [tags, setTags] = useState('');
 
-  useEffect(() => {
-    fetchNotes();
-  }, []);
+useEffect(() => {
+  fetchNotes();
+}, []);
 
   useEffect(() => {
     const filtered = notes.filter(note =>
@@ -44,7 +44,7 @@ const Dashboard = () => {
 
       if (response.ok) {
         const notesData = await response.json();
-        setNotes(notesData);
+        setNotes(notesData.notes);
       } else {
         console.error('Failed to fetch notes:', await response.text());
       }
@@ -200,8 +200,6 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-
-      {/* Note Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-black border-4 border-cyanGlow rounded-lg max-w-2xl w-full p-6">

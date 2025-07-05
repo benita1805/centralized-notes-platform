@@ -85,50 +85,39 @@ const noteSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-// Indexes for better query performance
 noteSchema.index({ author: 1, createdAt: -1 });
 noteSchema.index({ tags: 1 });
 noteSchema.index({ category: 1 });
 noteSchema.index({ title: 'text', content: 'text' });
-
-// Update updatedAt before saving
 noteSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
 });
 
-// Virtual for formatted creation date
 noteSchema.virtual('formattedCreatedAt').get(function() {
   return this.createdAt.toLocaleDateString();
 });
 
-// Method to check if user has access to note
 noteSchema.methods.canAccess = function(userId) {
-  // Owner can always access
-  if (this.author.toString() === userId.toString()) {
+   if (this.author.toString() === userId.toString()) {
     return true;
   }
   
-  // Check if note is shared with user
   if (!this.isPrivate) {
     return true;
   }
   
-  // Check if specifically shared with user
   return this.sharedWith.some(share => 
     share.user.toString() === userId.toString()
   );
 };
 
-// Method to check if user can edit note
+
 noteSchema.methods.canEdit = function(userId) {
-  // Owner can always edit
+
   if (this.author.toString() === userId.toString()) {
     return true;
   }
-  
-  // Check if user has write permission
   return this.sharedWith.some(share => 
     share.user.toString() === userId.toString() && 
     share.permission === 'write'

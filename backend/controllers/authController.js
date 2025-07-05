@@ -1,27 +1,21 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Joi = require('joi');
-
-
 // Validation schemas
 const registerSchema = Joi.object({
   name: Joi.string().min(2).max(100).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required()
 });
-
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required()
 });
-
-// Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '7d'
   });
 };
-
 // @desc    Register new user
 // @route   POST /api/auth/register
 // @access  Public
@@ -37,28 +31,18 @@ const register = async (req, res) => {
         details: error.details[0].message
       });
     }
-
     const { name, email, password } = req.body;
-
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
         message: 'User with this email already exists'
       });
     }
-
     console.log("✅ Creating new user with:", { name, email });
-
-    // Create new user
     const user = new User({ name, email, password, isActive:true });
     await user.save();
-
     console.log("🎉 User created successfully");
-
-    // Generate token
     const token = generateToken(user._id);
-
     res.status(201).json({
       message: 'User registered successfully',
       token,
@@ -76,7 +60,6 @@ const register = async (req, res) => {
     });
   }
 };
-
 // @desc    Login user
 // @route   POST /api/auth/login
 // @access  Public
@@ -123,7 +106,6 @@ const login = async (req, res) => {
     res.status(500).json({ message: 'Server error during login' });
   }
 };
-
 // @desc    Get current user
 // @route   GET /api/auth/me
 // @access  Private
@@ -143,7 +125,6 @@ const getMe = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 // @desc    Update user profile
 // @route   PUT /api/auth/profile
 // @access  Private
@@ -160,9 +141,7 @@ const updateProfile = async (req, res) => {
         details: error.details[0].message
       });
     }
-
     const { name } = req.body;
-
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
       { name },
@@ -178,7 +157,6 @@ const updateProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error during profile update' });
   }
 };
-
 module.exports = {
   register,
   login,

@@ -21,7 +21,7 @@ const NoteCard = ({ note, onEdit, onDelete }) => {
   return (
     <div className="bg-black border-2 border-cyanGlow text-magentaGlow rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col">
       <div className="p-4 flex flex-col h-full">
-        {/* Header */}
+        
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <h3 className="text-lg font-bold text-cyanGlow leading-snug line-clamp-2">
@@ -36,7 +36,6 @@ const NoteCard = ({ note, onEdit, onDelete }) => {
               <span className="hidden sm:inline">{formatDate(note.createdAt || note.updated_at)}</span>
             </div>
           </div>
-          {/* Actions */}
           <div className="flex items-center gap-1 ml-2">
             <button
               onClick={() => onEdit(note)}
@@ -54,13 +53,9 @@ const NoteCard = ({ note, onEdit, onDelete }) => {
             </button>
           </div>
         </div>
-
-        {/* Content */}
         <p className="text-sm text-white flex-grow mb-4">
           {truncateContent(note.content)}
         </p>
-
-        {/* Tags */}
         {note.tags && note.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {note.tags.slice(0, 3).map((tag, index) => (
@@ -78,8 +73,6 @@ const NoteCard = ({ note, onEdit, onDelete }) => {
             )}
           </div>
         )}
-
-        {/* Footer */}
         <div className="mt-auto pt-3 border-t border-cyanGlow flex justify-between items-center text-xs text-magentaGlow">
           {note.updatedAt && note.updatedAt !== note.createdAt && (
             <span>Updated {formatDate(note.updatedAt)}</span>

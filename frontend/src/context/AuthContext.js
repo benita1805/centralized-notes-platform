@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       setLoading(true);
-      const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userData);
 
       const { token, user: newUser } = response.data;
 
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       setLoading(true);
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, credentials);
 
       const { token, user: loggedInUser } = response.data;
 
